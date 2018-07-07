@@ -26,8 +26,9 @@ class Game {
     char get(int pos) const;
     void set(coord pos, char value);
     void set(int pos, char value);
-    bool validMove(coord pos, char player);
-    bool complete();
+    bool validMove(int pos, char player);
+    bool complete(char player);
+    void makeMove(int pos, char player);
 
   private:
     char board[HEIGHT*WIDTH];

@@ -1,20 +1,18 @@
 #include "game.h"
 #include <stdio.h>
 #include <iostream>
+#include <stdlib.h>
 
 int main() {
     Game g;
 
-    g.set(1, YELLOW);
-    g.print();
-    g.set(2, RED);
-    g.print();
-    g.set(3, YELLOW);
-    g.print();
-    g.set(4, RED);
-    g.print();
-    g.set(5, YELLOW);
-    g.print();
-
+    while(1) {
+        g.makeMove(rand()%7, RED);
+        g.print();
+        if(g.complete(RED)) break;
+        g.makeMove(rand()%7, YELLOW);
+        g.print();
+        if(g.complete(YELLOW)) break;
+    }
     return 0;
 }

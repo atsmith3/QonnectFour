@@ -70,12 +70,48 @@ void Game::set(int i, char value) {
     board[i] = value;
 }
 
-bool validMove(coord pos, char player) {
-    /* TODO Check Horizontal */
-    return true;
+bool Game::validMove(int pos, char player) {
+    if(board[pos] == EMPTY) return true;
+    return false;
 }
 
-bool complete() {
-    /* TODO Check for winning condition */
-     return true;
+bool Game::complete(char player) {
+     for(int i = 0; i < HEIGHT - 3; i++) {
+         for(int j = 0; j < WIDTH - 3; j++) {
+             if(board[(i + 0)*HEIGHT + (j + 0)] == player &&
+                board[(i + 1)*HEIGHT + (j + 0)] == player &&
+                board[(i + 2)*HEIGHT + (j + 0)] == player &&
+                board[(i + 3)*HEIGHT + (j + 0)] == player) {
+                 return true;
+             }
+             if(board[(i + 0)*HEIGHT + (j + 0)] == player &&
+                board[(i + 0)*HEIGHT + (j + 1)] == player &&
+                board[(i + 0)*HEIGHT + (j + 2)] == player &&
+                board[(i + 0)*HEIGHT + (j + 3)] == player) {
+                 return true;
+             }
+             if(board[(i + 0)*HEIGHT + (j + 0)] == player &&
+                board[(i + 1)*HEIGHT + (j + 1)] == player &&
+                board[(i + 2)*HEIGHT + (j + 2)] == player &&
+                board[(i + 3)*HEIGHT + (j + 3)] == player) {
+                 return true;
+             }
+             if(board[(i + 0)*HEIGHT + (j + 3)] == player &&
+                board[(i + 1)*HEIGHT + (j + 2)] == player &&
+                board[(i + 2)*HEIGHT + (j + 1)] == player &&
+                board[(i + 3)*HEIGHT + (j + 0)] == player) {
+                 return true;
+             }
+         }
+     }
+     return false;
+}
+
+void Game::makeMove(int pos, char player) {
+    for(int i = HEIGHT - 1; i >= 0; i--) {
+        if(board[i*HEIGHT + pos] == EMPTY) {
+            board[i*HEIGHT + pos] = player; 
+            return;
+        }
+    }
 }
