@@ -86,20 +86,8 @@ Game& Game::operator=(const Game& obj) {
 }
 
 bool Game::complete(char player) {
-     for(int i = 0; i < HEIGHT - 4; i++) {
-         for(int j = 0; j < WIDTH - 4; j++) {
-             if(board[(i + 0)*WIDTH + (j + 0)] == player &&
-                board[(i + 1)*WIDTH + (j + 0)] == player &&
-                board[(i + 2)*WIDTH + (j + 0)] == player &&
-                board[(i + 3)*WIDTH + (j + 0)] == player) {
-                 return true;
-             }
-             if(board[(i + 0)*WIDTH + (j + 0)] == player &&
-                board[(i + 0)*WIDTH + (j + 1)] == player &&
-                board[(i + 0)*WIDTH + (j + 2)] == player &&
-                board[(i + 0)*WIDTH + (j + 3)] == player) {
-                 return true;
-             }
+     for(int i = 0; i < HEIGHT - 3; i++) {
+         for(int j = 0; j < WIDTH - 3; j++) {
              if(board[(i + 0)*WIDTH + (j + 0)] == player &&
                 board[(i + 1)*WIDTH + (j + 1)] == player &&
                 board[(i + 2)*WIDTH + (j + 2)] == player &&
@@ -109,6 +97,26 @@ bool Game::complete(char player) {
              if(board[(i + 0)*WIDTH + (j + 3)] == player &&
                 board[(i + 1)*WIDTH + (j + 2)] == player &&
                 board[(i + 2)*WIDTH + (j + 1)] == player &&
+                board[(i + 3)*WIDTH + (j + 0)] == player) {
+                 return true;
+             }
+         }
+     }
+     for(int i = 0; i < HEIGHT; i++) {
+         for(int j = 0; j < WIDTH - 3; j++) {
+             if(board[(i + 0)*WIDTH + (j + 0)] == player &&
+                board[(i + 0)*WIDTH + (j + 1)] == player &&
+                board[(i + 0)*WIDTH + (j + 2)] == player &&
+                board[(i + 0)*WIDTH + (j + 3)] == player) {
+                 return true;
+             }
+         }
+     }
+     for(int i = 0; i < HEIGHT - 3; i++) {
+         for(int j = 0; j < WIDTH; j++) {
+             if(board[(i + 0)*WIDTH + (j + 0)] == player &&
+                board[(i + 1)*WIDTH + (j + 0)] == player &&
+                board[(i + 2)*WIDTH + (j + 0)] == player &&
                 board[(i + 3)*WIDTH + (j + 0)] == player) {
                  return true;
              }
@@ -139,8 +147,8 @@ int Game::evalFunction(char player) {
     int intermediate;
  
     // Check Diagonal Left for winning window
-    for(int j = 0; j < HEIGHT - 4; j++) {
-        for(int i = 0; i < WIDTH - 4; i++) {
+    for(int j = 0; j < HEIGHT - 3; j++) {
+        for(int i = 0; i < WIDTH - 3; i++) {
             if((board[(j + 0)*WIDTH + (i + 0)] == player || board[(j + 0)*HEIGHT + (i + 0)] == EMPTY) &&
                (board[(j + 1)*WIDTH + (i + 1)] == player || board[(j + 1)*HEIGHT + (i + 1)] == EMPTY) && 
                (board[(j + 2)*WIDTH + (i + 2)] == player || board[(j + 2)*HEIGHT + (i + 2)] == EMPTY) && 
@@ -175,8 +183,8 @@ int Game::evalFunction(char player) {
         }
     }
     // Check Diagonal Right
-    for(int j = 0; j < HEIGHT - 4; j++) {
-        for(int i = 0; i < WIDTH - 4; i++) {
+    for(int j = 0; j < HEIGHT - 3; j++) {
+        for(int i = 0; i < WIDTH - 3; i++) {
             if((board[(j + 3)*WIDTH + (i + 0)] == player || board[(j + 3)*WIDTH + (i + 0)] == EMPTY) &&
                (board[(j + 2)*WIDTH + (i + 1)] == player || board[(j + 2)*WIDTH + (i + 1)] == EMPTY) && 
                (board[(j + 1)*WIDTH + (i + 2)] == player || board[(j + 1)*WIDTH + (i + 2)] == EMPTY) && 
@@ -212,7 +220,7 @@ int Game::evalFunction(char player) {
     }
 
     // Check Vertical
-    for(int j = 0; j < HEIGHT - 4; j++) {
+    for(int j = 0; j < HEIGHT - 3; j++) {
         for(int i = 0; i < WIDTH - 0; i++) {
             if((board[(j + 0)*WIDTH + (i + 0)] == player || board[(j + 0)*WIDTH + (i + 0)] == EMPTY) &&
                (board[(j + 1)*WIDTH + (i + 0)] == player || board[(j + 1)*WIDTH + (i + 0)] == EMPTY) && 
@@ -250,7 +258,7 @@ int Game::evalFunction(char player) {
 
     // Check Horizontal
     for(int j = 0; j < HEIGHT; j++) {
-        for(int i = 0; i < WIDTH - 4; i++) {
+        for(int i = 0; i < WIDTH - 3; i++) {
             if((board[(j + 0)*WIDTH + (i + 0)] == player || board[(j + 0)*WIDTH + (i + 0)] == EMPTY) &&
                (board[(j + 0)*WIDTH + (i + 1)] == player || board[(j + 0)*WIDTH + (i + 1)] == EMPTY) && 
                (board[(j + 0)*WIDTH + (i + 2)] == player || board[(j + 0)*WIDTH + (i + 2)] == EMPTY) && 
