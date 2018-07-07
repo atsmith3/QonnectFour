@@ -40,10 +40,10 @@ void Game::print() {
         printf("-----------------------------\n");
         for(int j = 0; j < WIDTH; j++) {
             printf("| ");
-            if (get(i*HEIGHT + j) == EMPTY) {
+            if (get(i*WIDTH + j) == EMPTY) {
                 printf(" ");
             }
-            else if (get(i*HEIGHT + j) == RED) {
+            else if (get(i*WIDTH + j) == RED) {
                 printf("%s#", KRED);
             }
             else {
@@ -58,7 +58,7 @@ void Game::print() {
 }
 
 char Game::get(coord pos) const {
-    return board[pos.y*HEIGHT + pos.x];
+    return board[pos.y*WIDTH + pos.x];
 }
 
 char Game::get(int i) const {
@@ -66,7 +66,7 @@ char Game::get(int i) const {
 }
 
 void Game::set(coord pos, char value) {
-    board[pos.y*HEIGHT + pos.x] = value;
+    board[pos.y*WIDTH + pos.x] = value;
 }
 
 void Game::set(int i, char value) {
@@ -86,30 +86,30 @@ Game& Game::operator=(const Game& obj) {
 }
 
 bool Game::complete(char player) {
-     for(int i = 0; i < HEIGHT - 3; i++) {
-         for(int j = 0; j < WIDTH - 3; j++) {
-             if(board[(i + 0)*HEIGHT + (j + 0)] == player &&
-                board[(i + 1)*HEIGHT + (j + 0)] == player &&
-                board[(i + 2)*HEIGHT + (j + 0)] == player &&
-                board[(i + 3)*HEIGHT + (j + 0)] == player) {
+     for(int i = 0; i < HEIGHT - 4; i++) {
+         for(int j = 0; j < WIDTH - 4; j++) {
+             if(board[(i + 0)*WIDTH + (j + 0)] == player &&
+                board[(i + 1)*WIDTH + (j + 0)] == player &&
+                board[(i + 2)*WIDTH + (j + 0)] == player &&
+                board[(i + 3)*WIDTH + (j + 0)] == player) {
                  return true;
              }
-             if(board[(i + 0)*HEIGHT + (j + 0)] == player &&
-                board[(i + 0)*HEIGHT + (j + 1)] == player &&
-                board[(i + 0)*HEIGHT + (j + 2)] == player &&
-                board[(i + 0)*HEIGHT + (j + 3)] == player) {
+             if(board[(i + 0)*WIDTH + (j + 0)] == player &&
+                board[(i + 0)*WIDTH + (j + 1)] == player &&
+                board[(i + 0)*WIDTH + (j + 2)] == player &&
+                board[(i + 0)*WIDTH + (j + 3)] == player) {
                  return true;
              }
-             if(board[(i + 0)*HEIGHT + (j + 0)] == player &&
-                board[(i + 1)*HEIGHT + (j + 1)] == player &&
-                board[(i + 2)*HEIGHT + (j + 2)] == player &&
-                board[(i + 3)*HEIGHT + (j + 3)] == player) {
+             if(board[(i + 0)*WIDTH + (j + 0)] == player &&
+                board[(i + 1)*WIDTH + (j + 1)] == player &&
+                board[(i + 2)*WIDTH + (j + 2)] == player &&
+                board[(i + 3)*WIDTH + (j + 3)] == player) {
                  return true;
              }
-             if(board[(i + 0)*HEIGHT + (j + 3)] == player &&
-                board[(i + 1)*HEIGHT + (j + 2)] == player &&
-                board[(i + 2)*HEIGHT + (j + 1)] == player &&
-                board[(i + 3)*HEIGHT + (j + 0)] == player) {
+             if(board[(i + 0)*WIDTH + (j + 3)] == player &&
+                board[(i + 1)*WIDTH + (j + 2)] == player &&
+                board[(i + 2)*WIDTH + (j + 1)] == player &&
+                board[(i + 3)*WIDTH + (j + 0)] == player) {
                  return true;
              }
          }
@@ -126,8 +126,8 @@ bool Game::staleMate() {
 
 void Game::makeMove(int pos, char player) {
     for(int i = HEIGHT - 1; i >= 0; i--) {
-        if(board[i*HEIGHT + pos] == EMPTY) {
-            board[i*HEIGHT + pos] = player; 
+        if(board[i*WIDTH + pos] == EMPTY) {
+            board[i*WIDTH + pos] = player; 
             return;
         }
     }
@@ -139,16 +139,16 @@ int Game::evalFunction(char player) {
     int intermediate;
  
     // Check Diagonal Left for winning window
-    for(int j = 0; j < HEIGHT - 3; j++) {
-        for(int i = 0; i < WIDTH - 3; i++) {
-            if((board[(j + 0)*HEIGHT + (i + 0)] == player || board[(j + 0)*HEIGHT + (i + 0)] == EMPTY) &&
-               (board[(j + 1)*HEIGHT + (i + 1)] == player || board[(j + 1)*HEIGHT + (i + 1)] == EMPTY) && 
-               (board[(j + 2)*HEIGHT + (i + 2)] == player || board[(j + 2)*HEIGHT + (i + 2)] == EMPTY) && 
-               (board[(j + 3)*HEIGHT + (i + 3)] == player || board[(j + 3)*HEIGHT + (i + 3)] == EMPTY)) { 
+    for(int j = 0; j < HEIGHT - 4; j++) {
+        for(int i = 0; i < WIDTH - 4; i++) {
+            if((board[(j + 0)*WIDTH + (i + 0)] == player || board[(j + 0)*HEIGHT + (i + 0)] == EMPTY) &&
+               (board[(j + 1)*WIDTH + (i + 1)] == player || board[(j + 1)*HEIGHT + (i + 1)] == EMPTY) && 
+               (board[(j + 2)*WIDTH + (i + 2)] == player || board[(j + 2)*HEIGHT + (i + 2)] == EMPTY) && 
+               (board[(j + 3)*WIDTH + (i + 3)] == player || board[(j + 3)*HEIGHT + (i + 3)] == EMPTY)) { 
                 intermediate = 0;
                 for(int k = 0; k < 4; k++) {
                     //Count up the quantity in the window
-                    if(board[(j + k)*HEIGHT + (i + k)] != EMPTY) intermediate++;
+                    if(board[(j + k)*WIDTH + (i + k)] != EMPTY) intermediate++;
                 }
                 switch(intermediate) {
                     case 1: {
@@ -175,16 +175,16 @@ int Game::evalFunction(char player) {
         }
     }
     // Check Diagonal Right
-    for(int j = 0; j < 3; j++) {
-        for(int i = 0; i < 3; i++) {
-            if((board[(j + 3)*HEIGHT + (i + 0)] == player || board[(j + 3)*HEIGHT + (i + 0)] == EMPTY) &&
-               (board[(j + 2)*HEIGHT + (i + 1)] == player || board[(j + 2)*HEIGHT + (i + 1)] == EMPTY) && 
-               (board[(j + 1)*HEIGHT + (i + 2)] == player || board[(j + 1)*HEIGHT + (i + 2)] == EMPTY) && 
-               (board[(j + 0)*HEIGHT + (i + 3)] == player || board[(j + 0)*HEIGHT + (i + 3)] == EMPTY)) { 
+    for(int j = 0; j < HEIGHT - 4; j++) {
+        for(int i = 0; i < WIDTH - 4; i++) {
+            if((board[(j + 3)*WIDTH + (i + 0)] == player || board[(j + 3)*WIDTH + (i + 0)] == EMPTY) &&
+               (board[(j + 2)*WIDTH + (i + 1)] == player || board[(j + 2)*WIDTH + (i + 1)] == EMPTY) && 
+               (board[(j + 1)*WIDTH + (i + 2)] == player || board[(j + 1)*WIDTH + (i + 2)] == EMPTY) && 
+               (board[(j + 0)*WIDTH + (i + 3)] == player || board[(j + 0)*WIDTH + (i + 3)] == EMPTY)) { 
                 intermediate = 0;
                 for(int k = 0; k < 4; k++) {
                     //Count up the quantity in the window
-                    if(board[(j - k)*HEIGHT + (i + k)] != EMPTY) intermediate++;
+                    if(board[(j - k)*WIDTH + (i + k)] != EMPTY) intermediate++;
                 }
                 switch(intermediate) {
                     case 1: {
@@ -212,16 +212,16 @@ int Game::evalFunction(char player) {
     }
 
     // Check Vertical
-    for(int j = 0; j < 3; j++) {
-        for(int i = 0; i < 7; i++) {
-            if((board[(j + 0)*HEIGHT + (i + 0)] == player || board[(j + 0)*HEIGHT + (i + 0)] == EMPTY) &&
-               (board[(j + 1)*HEIGHT + (i + 0)] == player || board[(j + 1)*HEIGHT + (i + 0)] == EMPTY) && 
-               (board[(j + 2)*HEIGHT + (i + 0)] == player || board[(j + 2)*HEIGHT + (i + 0)] == EMPTY) && 
-               (board[(j + 3)*HEIGHT + (i + 0)] == player || board[(j + 3)*HEIGHT + (i + 0)] == EMPTY)) { 
+    for(int j = 0; j < HEIGHT - 4; j++) {
+        for(int i = 0; i < WIDTH - 0; i++) {
+            if((board[(j + 0)*WIDTH + (i + 0)] == player || board[(j + 0)*WIDTH + (i + 0)] == EMPTY) &&
+               (board[(j + 1)*WIDTH + (i + 0)] == player || board[(j + 1)*WIDTH + (i + 0)] == EMPTY) && 
+               (board[(j + 2)*WIDTH + (i + 0)] == player || board[(j + 2)*WIDTH + (i + 0)] == EMPTY) && 
+               (board[(j + 3)*WIDTH + (i + 0)] == player || board[(j + 3)*WIDTH + (i + 0)] == EMPTY)) { 
                 intermediate = 0;
                 for(int k = 0; k < 4; k++) {
                     //Count up the quantity in the window
-                    if(board[(j + k)*HEIGHT + (i + 0)] != EMPTY) intermediate++;
+                    if(board[(j + k)*WIDTH + (i + 0)] != EMPTY) intermediate++;
                 }
                 switch(intermediate) {
                     case 1: {
@@ -249,16 +249,16 @@ int Game::evalFunction(char player) {
     }
 
     // Check Horizontal
-    for(int j = 0; j < 7; j++) {
-        for(int i = 0; i < 3; i++) {
-            if((board[(j + 0)*HEIGHT + (i + 0)] == player || board[(j + 0)*HEIGHT + (i + 0)] == EMPTY) &&
-               (board[(j + 0)*HEIGHT + (i + 1)] == player || board[(j + 0)*HEIGHT + (i + 1)] == EMPTY) && 
-               (board[(j + 0)*HEIGHT + (i + 2)] == player || board[(j + 0)*HEIGHT + (i + 2)] == EMPTY) && 
-               (board[(j + 0)*HEIGHT + (i + 3)] == player || board[(j + 0)*HEIGHT + (i + 3)] == EMPTY)) { 
+    for(int j = 0; j < HEIGHT; j++) {
+        for(int i = 0; i < WIDTH - 4; i++) {
+            if((board[(j + 0)*WIDTH + (i + 0)] == player || board[(j + 0)*WIDTH + (i + 0)] == EMPTY) &&
+               (board[(j + 0)*WIDTH + (i + 1)] == player || board[(j + 0)*WIDTH + (i + 1)] == EMPTY) && 
+               (board[(j + 0)*WIDTH + (i + 2)] == player || board[(j + 0)*WIDTH + (i + 2)] == EMPTY) && 
+               (board[(j + 0)*WIDTH + (i + 3)] == player || board[(j + 0)*WIDTH + (i + 3)] == EMPTY)) { 
                 intermediate = 0;
                 for(int k = 0; k < 4; k++) {
                     //Count up the quantity in the window
-                    if(board[(j + 0)*HEIGHT + (i + k)] != EMPTY) intermediate++;
+                    if(board[(j + 0)*WIDTH + (i + k)] != EMPTY) intermediate++;
                 }
                 switch(intermediate) {
                     case 1: {
