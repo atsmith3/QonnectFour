@@ -28,10 +28,18 @@ class Game {
     void set(int pos, char value);
     bool validMove(int pos, char player);
     bool complete(char player);
+    bool staleMate();
     void makeMove(int pos, char player);
+    int  evalFunction(char player);
+    int bestMove(char player, int depth);
+    Game& operator=(const Game& obj);
+
 
   private:
     char board[HEIGHT*WIDTH];
+    
+    /* Methods */
+    int miniMax(Game g, char player, int depth);
 };
 
 #endif
