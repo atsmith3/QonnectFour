@@ -32,7 +32,6 @@ def hsv_filt(frame, lower_bounds, upper_bounds, wrap_bounds=False):
 
 def drawLines(image, lines, thickness=1):
   for line in lines:
-    # print("line="+str(line))
     cv2.line(image, (line[0], line[1]), (line[2], line[3]),
              (0, 0, 255), thickness)
 
@@ -89,7 +88,7 @@ def process_image(mat, image_id=1):
       # Extract a ROI centered on the detected point, and HSV filter
       roi = mat[int(y_pt-avg_radii):int(y_pt+avg_radii),int(x_pt-avg_radii):int(x_pt+avg_radii),:]
       redpiece_pix = hsv_filt(roi, red_lower, red_upper, wrap_bounds=True)
-      if np.sum(np.sum(redpiece_pix)) > avg_radii*avg_radii*4*0.9:
+      if np.sum(np.sum(redpiece_pix/255)) > avg_radii*avg_radii*4*0.9:
         # Detected a red piece
         state[row,col] = 1
         continue
